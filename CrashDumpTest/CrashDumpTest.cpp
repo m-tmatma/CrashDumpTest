@@ -3,10 +3,20 @@
 
 #include "pch.h"
 #include <iostream>
+#include "DbgHelpUtil.h"
 
 int main()
 {
     std::cout << "Hello World!\n"; 
+
+	if (CDbgHelpUtil::LoadDll())
+	{
+		std::cout << "Load OK!\n";
+	}
+	else
+	{
+		std::cout << "Load NG\n";
+	}
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
