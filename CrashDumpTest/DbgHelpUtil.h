@@ -122,11 +122,7 @@ public:
 	static bool LoadDll(void);
 	static void UnloadDll(void);
 
-private:
-	static LONG WINAPI ExceptionHandler(PEXCEPTION_POINTERS ptrs);
-
-	static FARPROC GetAPI(LPCSTR lpProcName);
-	static HMODULE m_DbgHelpDll;
+	/* API */
 	static MINIDUMPWRITEDUMP m_MiniDumpWriteDump;
 	static SYMINITIALIZE m_SymInitialize;
 	static SYMSETOPTIONS m_SymSetOptions;
@@ -140,4 +136,9 @@ private:
 	static STACKWALK64 m_StackWalk64;
 	static SYMFUNCTIONTABLEACCESS64 m_SymFunctionTableAccess64;
 	static SYMGETMODULEBASE64 m_SymGetModuleBase64;
+
+private:
+	static LONG WINAPI ExceptionHandler(PEXCEPTION_POINTERS ptrs);
+	static FARPROC GetAPI(LPCSTR lpProcName);
+	static HMODULE m_DbgHelpDll;
 };
