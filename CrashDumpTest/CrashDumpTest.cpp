@@ -17,6 +17,9 @@ int main()
 	{
 		std::cout << "Load NG\n";
 	}
+
+	char *p = NULL;
+	*p = 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

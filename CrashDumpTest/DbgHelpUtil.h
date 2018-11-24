@@ -123,8 +123,9 @@ public:
 	static void UnloadDll(void);
 
 private:
-	static FARPROC GetAPI(LPCSTR lpProcName);
+	static LONG WINAPI ExceptionHandler(PEXCEPTION_POINTERS ptrs);
 
+	static FARPROC GetAPI(LPCSTR lpProcName);
 	static HMODULE m_DbgHelpDll;
 	static MINIDUMPWRITEDUMP m_MiniDumpWriteDump;
 	static SYMINITIALIZE m_SymInitialize;

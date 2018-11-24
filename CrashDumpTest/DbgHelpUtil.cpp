@@ -4,6 +4,11 @@
 #include <dbghelp.h>
 #include "DbgHelpUtil.h"
 
+#define DEVELOP_DBG_UTIL	1
+#if DEVELOP_DBG_UTIL
+#include <stdio.h>
+#endif // DEVELOP_DBG_UTIL
+
 HMODULE CDbgHelpUtil::m_DbgHelpDll = (HMODULE)INVALID_HANDLE_VALUE;
 MINIDUMPWRITEDUMP CDbgHelpUtil::m_MiniDumpWriteDump = NULL;
 SYMINITIALIZE CDbgHelpUtil::m_SymInitialize = NULL;
@@ -117,6 +122,11 @@ bool CDbgHelpUtil::LoadDll(void)
 	{
 		goto cleanup;
 	}
+
+	m_SymSetOptions(m_SymGetOptions() | SYMOPT_LOAD_LINES | SYMOPT_DEFERRED_LOADS);
+	m_SymInitialize(::GetCurrentProcess(), NULL, TRUE);
+
+	::SetUnhandledExceptionFilter(ExceptionHandler);
 	return true;
 
 cleanup:
@@ -126,5 +136,17 @@ cleanup:
 
 void CDbgHelpUtil::UnloadDll(void)
 {
-	::FreeLibrary(m_DbgHelpDll);
+	if (m_DbgHelpDll != NULL)
+	{
+		::FreeLibrary(m_DbgHelpDll);
+		m_DbgHelpDll = NULL;
+	}
+}
+
+LONG WINAPI CDbgHelpUtil::ExceptionHandler(PEXCEPTION_POINTERS ptrs)
+{
+#if DEVELOP_DBG_UTIL
+	fprintf(stdout, "found: ERROR: ExceptionCode = %08x", ptrs->ExceptionRecord->ExceptionCode);
+#endif
+	return EXCEPTION_EXECUTE_HANDLER;
 }
